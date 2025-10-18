@@ -1,0 +1,310 @@
+# ===============================
+# Operating System Files
+# ===============================
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+Desktop.ini
+
+# ===============================
+# IDE and Editor Files
+# ===============================
+# VS Code
+.vscode/
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+*.swp
+*.swo
+*~
+
+# IntelliJ IDEA
+.idea/
+*.iws
+*.iml
+*.ipr
+
+# Eclipse
+.settings/
+bin/
+*.tmp
+*.bak
+*.patch
+*.diff
+
+# NetBeans
+/nbproject/private/
+/nbbuild/
+/dist/
+/nbdist/
+/.nb-gradle/
+
+# ===============================
+# Java Specific
+# ===============================
+# Compiled class files
+*.class
+*.jar
+*.war
+*.ear
+*.zip
+*.tar.gz
+*.rar
+
+# Build output
+build/
+target/
+out/
+bin/
+
+# Package Files
+*.jar
+*.war
+*.nar
+*.ear
+*.zip
+*.tar.gz
+*.rar
+
+# Maven
+target/
+pom.xml.tag
+pom.xml.releaseBackup
+pom.xml.versionsBackup
+pom.xml.next
+release.properties
+dependency-reduced-pom.xml
+buildNumber.properties
+.mvn/timing.properties
+.mvn/wrapper/maven-wrapper.jar
+
+# Gradle
+.gradle/
+build/
+
+# Android
+.keystore
+*.apk
+*.ap_
+*.aab
+
+# ===============================
+# React/Node.js Specific
+# ===============================
+# Dependencies
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.pnp/
+
+# Production builds
+build/
+dist/
+.next/
+out/
+
+# Runtime data
+pids
+*.pid
+*.seed
+*.pid.lock
+
+# Coverage directory used by tools like istanbul
+coverage/
+*.lcov
+
+# nyc test coverage
+.nyc_output
+
+# Dependency directories
+jspm_packages/
+
+# Optional npm cache directory
+.npm
+
+# Optional eslint cache
+.eslintcache
+
+# Microbundle cache
+.rpt2_cache/
+.rts2_cache_cjs/
+.rts2_cache_es/
+.rts2_cache_umd/
+
+# Optional REPL history
+.node_repl_history
+
+# Output of 'npm pack'
+*.tgz
+
+# Yarn Integrity file
+.yarn-integrity
+
+# dotenv environment variables file
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# parcel-bundler cache (https://parceljs.org/)
+.cache
+.parcel-cache
+
+# Next.js
+.next/
+
+# Nuxt.js
+.nuxt/
+
+# Gatsby
+public
+
+# Storybook
+storybook-static
+
+# ===============================
+# Vue.js Specific
+# ===============================
+# Vuepress build output
+.vuepress/dist
+
+# Serverless directories
+.serverless/
+
+# FuseBox cache
+.fusebox/
+
+# DynamoDB Local files
+.dynamodb/
+
+# TernJS port file
+.tern-port
+
+# Vite
+*.local
+
+# ===============================
+# Database Files
+# ===============================
+# SQLite
+*.db
+*.sqlite
+*.sqlite3
+
+# MySQL
+*.myd
+*.myi
+*.ibd
+*.frm
+*.ibd
+*.sock
+
+# PostgreSQL
+*.pid
+*.postgresql
+
+# MongoDB
+/data/db/
+*.ns
+*.0
+*.1
+*.2
+
+# SQL Server
+*.mdf
+*.ldf
+
+# Database dumps
+*.dump
+*.sql
+*.backup
+
+# Database config files with credentials
+**/database.config
+**/db.config
+**/connection.properties
+
+# ===============================
+# Logs
+# ===============================
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+lerna-debug.log*
+
+# ===============================
+# Runtime data
+# ===============================
+pids
+*.pid
+*.seed
+*.pid.lock
+
+# ===============================
+# Dependency directories
+# ===============================
+node_modules/
+jspm_packages/
+
+# ===============================
+# Optional npm cache directory
+# ===============================
+.npm
+
+# ===============================
+# Optional eslint cache
+# ===============================
+.eslintcache
+
+# ===============================
+# Microbundle cache
+# ===============================
+.rpt2_cache/
+.rts2_cache_cjs/
+.rts2_cache_es/
+.rts2_cache_umd/
+
+# ===============================
+# Optional REPL history
+# ===============================
+.node_repl_history
+
+# ===============================
+# Output of 'npm pack'
+# ===============================
+*.tgz
+
+# ===============================
+# Yarn Integrity file
+# ===============================
+.yarn-integrity
+
+# ===============================
+# dotenv environment variables file
+# ===============================
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# ===============================
+# parcel-bundler cache (https://parceljs.org/)
+# ===============================
+.cache
+.parcel-cache
+
+# ===============================
+# Temporary folders
+# ===============================
+tmp/
+temp/
