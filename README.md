@@ -680,47 +680,550 @@ UPDATE partners SET status = 'inactive' WHERE partner_id = 5;
             Злоумышленник не может использовать радужные таблицы.
             Ему нужно атаковать КАЖДОГО пользователя отдельно!
 
-# Модуль работы с партнерами
+## Модуль работы с партнерами
 
-## Описание проекта
+### Описание проекта
 Программный модуль для учета партнеров и расчета индивидуальных скидок на основе объема продаж.
 
-## Функциональность
+### Функциональность
 - Вывод списка партнеров из базы данных
 - Расчет индивидуальных скидок для партнеров
 - Учет продаж продукции за весь период работы
 
-## Алгоритм расчета скидок
+### Алгоритм расчета скидок
 Величина скидки рассчитывается на основе общего количества реализованной продукции:
 - до 10 000 - 0%
 - от 10 000 до 50 000 - 5%
 - от 50 000 до 300 000 - 10%
 - более 300 000 - 15%
 
-## Технические требования
-### Оформление кода
+### Технические требования
+#### Оформление кода
 - **C#/Java**: CamelCase для идентификаторов
 - **Python**: snake_case для идентификаторов  
 - **1C**: Стандарт именования 1C (https://its.1c.ru/db/v8std#browse:13:-1:31)
 - Не более одной команды в строке
 - Идентификаторы должны отражать их назначение
 
-### Интерфейс
+#### Интерфейс
 - Единый согласованный внешний вид согласно руководству по стилю
 - Заголовок окна/страницы соответствует назначению
 - Установка иконки приложения (если реализуемо)
 - Размещение логотипа компании на главной форме
 
-## Установка и запуск
+### Установка и запуск
 1. Подключите базу данных к приложению
 2. Настройте параметры подключения
 3. Запустите приложение
 
-## Тестирование
+### Тестирование
 Модуль прошел отладку и тестирование для проверки:
 - Корректной работы всех функций
 - Отсутствия аварийного завершения работы
 - Правильного расчета скидок
 - Корректного отображения данных из БД
 
-## Структура проекта
+## Настройка проекта на `Java` для связи с db (api)
+Перед работой надо проверить какой java установлен на компьютере
+```cmd
+   java -version
+   javac -version
+```
+
+Ответ
+```cmd
+# java version "25" 2025-09-16 LTS
+# Java(TM) SE Runtime Environment (build 25+37-LTS-3491)
+# Java HotSpot(TM) 64-Bit Server VM (build 25+37-LTS-3491, mixed mode, sharing)
+
+# javac 25
+```
+
+Для работы нужна `25` версия `java`
+
+---
+
+Скачивание JDK 25
+
+1. Перейдите на официальный сайт:
+
+   - Oracle JDK: https://www.oracle.com/java/technologies/downloads/ (со временем на этой странице появится раздел "Java 25").
+
+   - OpenJDK (рекомендуется): Eclipse Temurin или другие сборки (Azul Zulu, Amazon Corretto). Эти сборки полностью бесплатны для любого использования.
+
+2. Выберите версию и ОС:
+
+3. Найдите раздел JDK 25.
+
+   - Выберите вашу операционную систему (Windows, macOS, Linux) и разрядность (x64, ARM64).
+
+4. Скачайте установщик:
+
+   * Для Windows: обычно файл .msi
+
+   * Для macOS: файл .pkg или архив .tar.gz
+
+   * Для Linux: архив .tar.gz или пакеты (.deb, .rpm)
+
+---
+
+Обязательно! Должна быть переменная окружения на 25, если на другой, то проект не заработает
+
+Проверка статуса переменной окружения
+```cmd
+echo %JAVA_HOME%
+```
+
+Ответ `C:\Program Files\Java\jdk-25`, если версия ниже 25, то проблема с запуском будет.
+
+Установка нужной переменной окружения, если установленно несколько java на компьютере
+
+```cmd
+# Установите JAVA_HOME для Java 25
+[Environment]::SetEnvironmentVariable("JAVA_HOME", "C:\Program Files\Java\jdk-25", "Machine")
+
+# Перезагрузите переменные среды
+$env:JAVA_HOME = "C:\Program Files\Java\jdk-25"
+
+# Проверьте
+echo $env:JAVA_HOME
+java -version
+```
+
+Принудительное обновление, если другие не сработали
+```cmd
+# Принудительно обновите переменные в текущей сессии
+set JAVA_HOME=C:\Program Files\Java\jdk-25
+```
+
+Для сборки проекта на java используем сборщик https://start.spring.io/
+
+С настройками:
+
+<img src="./img/Java settings.png" alt="java settings" />
+
+Пошаговая настройка проекта:
+   1. Project → Maven
+      - ✅ Выберите Maven (более стандартный для Java проектов)
+   2. Language → Java
+      - ✅ Выберите Java
+   3. Spring Boot → 3.4.10
+      - ✅ Выберите 3.4.10 (поддерживает Java 25)
+      - ❌ НЕ выбирайте версии 4.x.x - они еще в разработке
+      - ❌ НЕ выбирайте SNAPSHOT версии - они нестабильные
+   4. Project Metadata - заполните так:
+      | Поле         | Значение              | Объяснение                |
+      |--------------|-----------------------|---------------------------|
+      | Group        | com.company           | Идентификатор вашей компании |
+      | Artifact     | partners              | Название проекта          |
+      | Name         | partner-system        | Отображаемое имя          |
+      | Description  | Partner management system | Описание проекта       |
+      | Package name | com.company.partners  | Автоматически заполнится  |
+      | Packaging    | Jar                   | Формат упаковки           |
+      | Java         | 25                    | Версия Java               |
+
+   5. Dependencies - добавьте следующие зависимости
+      * Обязательные зависимости:
+         - ✅ Spring Web - для REST API
+         - ✅ Spring Data JPA - для работы с базой данных
+         - ✅ MySQL Driver - драйвер для MySQL
+      * Дополнительные (рекомендуемые):
+         - ✅ Spring Boot DevTools - для горячей перезагрузки
+         - ✅ Lombok - для сокращения boilerplate кода (опционально)
+
+После генерации проекта:
+   1. Структура проекта будет такой:
+      ```bash
+      partner-system/
+      ├── src/
+      │   └── main/
+      │       ├── java/com/company/partners/
+      │       │   └── PartnerSystemApplication.java
+      │       └── resources/
+      │           └── application.properties
+      ├── pom.xml
+      └── README.md
+      ```
+
+   2. Настройте application.properties:
+```
+# База данных (замените на ваши настройки)
+spring.datasource.url=jdbc:mysql://localhost:3306/partner_system
+spring.datasource.username=ваш_username
+spring.datasource.password=ваш_пароль
+
+# Для разработки - показывать SQL запросы
+spring.jpa.show-sql=true
+spring.jpa.properties.hibernate.format_sql=true
+
+# Порт приложения
+server.port=8080
+```
+
+Внимательно разберите эти настройки!
+
+   3. Запустите проект:
+```
+# В папке проекта
+.\mvnw.cmd spring-boot:run
+```
+
+   4. Почему именно такие настройки:
+      - Spring Boot 3.4.10 - стабильная версия с поддержкой Java 25
+      - Maven - стандартная система сборки для Java
+      - Jar - не требует внешнего сервера приложений
+      - Java 25 - соответствует вашей установленной версии
+      - Зависимости - `минимальный набор` для работы с партнерами и БД
+
+Основные команды:
+   - Запуск проекта
+```
+.\mvnw.cmd spring-boot:run
+```
+   - Очистка проекта и перезапуск (`Аварийный метод`)
+```
+.\mvnw.cmd clean compile
+.\mvnw.cmd spring-boot:run
+```
+   - Принудительное обновление зависимостей `Крайний метод`
+```
+.\mvnw.cmd clean compile -U
+.\mvnw.cmd spring-boot:run
+```
+
+Проверка работоспособности проекта на java 25
+   1. Создайте простой тестовый контроллер для проверки:
+      - src/main/java/com/company/partners/controller/TestController.java:
+```java
+package com.company.partners.controller;
+
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+@RestController
+public class TestController {
+    
+    @GetMapping("/test")
+    public String test() {
+        return "Spring Boot is working with Java 25!";
+    }
+}
+```
+
+   2. Запустите проект
+```
+.\mvnw.cmd spring-boot:run
+```
+
+   3. Проверить по адресу: http://localhost:8080/test
+
+   4. Настройте свою базу, под `backend`
+      - src/main/resources/application.properties
+   
+   5. Создайте простую сущность для тестирования под вашу базу (`модель`):
+      - src/main/java/com/company/partners/model/Partner.java:
+```java
+package com.company.partners.model;
+
+import jakarta.persistence.*;
+
+@Entity
+@Table(name = "partners")
+public class Partner {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+    
+    @Column(name = "name", nullable = false)
+    private String name;
+    
+    @Column(name = "email")
+    private String email;
+    
+    @Column(name = "phone")
+    private String phone;
+    
+    @Column(name = "total_sales")
+    private Double totalSales = 0.0;
+    
+    // Конструкторы
+    public Partner() {}
+    
+    public Partner(String name, String email, String phone) {
+        this.name = name;
+        this.email = email;
+        this.phone = phone;
+    }
+    
+    // Геттеры и сеттеры
+    public Long getId() { return id; }
+    public void setId(Long id) { this.id = id; }
+    
+    public String getName() { return name; }
+    public void setName(String name) { this.name = name; }
+    
+    public String getEmail() { return email; }
+    public void setEmail(String email) { this.email = email; }
+    
+    public String getPhone() { return phone; }
+    public void setPhone(String phone) { this.phone = phone; }
+    
+    public Double getTotalSales() { return totalSales; }
+    public void setTotalSales(Double totalSales) { this.totalSales = totalSales; }
+}
+```
+
+Внимательно разберите код (обратите внимение на private, public, конструкторы)!
+
+   6. Repository для работы с базой данных:
+      - src/main/java/com/company/partners/repository/PartnerRepository.java:
+```java
+package com.company.partners.repository;
+
+import com.company.partners.model.Partner;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
+
+@Repository
+public interface PartnerRepository extends JpaRepository<Partner, Long> {
+    // Дополнительные методы можно добавить здесь
+}
+```
+
+   7. Service с бизнес-логикой:
+      - src/main/java/com/company/partners/service/PartnerService.java:
+```java
+package com.company.partners.service;
+
+import com.company.partners.model.Partner;
+import com.company.partners.repository.PartnerRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
+
+@Service
+public class PartnerService {
+
+    @Autowired
+    private PartnerRepository partnerRepository;
+
+    // Получить всех партнеров
+    public List<Partner> getAllPartners() {
+        return partnerRepository.findAll();
+    }
+
+    // Получить партнера по ID
+    public Partner getPartnerById(Long id) {
+        return partnerRepository.findById(id).orElse(null);
+    }
+
+    // Создать нового партнера
+    public Partner createPartner(Partner partner) {
+        return partnerRepository.save(partner);
+    }
+
+    // Обновить партнера
+    public Partner updatePartner(Long id, Partner partnerDetails) {
+        Partner partner = partnerRepository.findById(id).orElse(null);
+        if (partner != null) {
+            partner.setName(partnerDetails.getName());
+            partner.setEmail(partnerDetails.getEmail());
+            partner.setPhone(partnerDetails.getPhone());
+            partner.setTotalSales(partnerDetails.getTotalSales());
+            return partnerRepository.save(partner);
+        }
+        return null;
+    }
+
+    // Удалить партнера
+    public void deletePartner(Long id) {
+        partnerRepository.deleteById(id);
+    }
+
+    // Рассчитать скидку для партнера
+    public Double calculateDiscount(Long partnerId) {
+        Partner partner = partnerRepository.findById(partnerId).orElse(null);
+        if (partner != null) {
+            Double totalSales = partner.getTotalSales();
+            if (totalSales > 300000) return 0.15;
+            else if (totalSales > 50000) return 0.10;
+            else if (totalSales > 10000) return 0.05;
+            else return 0.0;
+        }
+        return 0.0;
+    }
+}
+```
+
+   8. Полный контроллер для работы с партнерами:
+      - src/main/java/com/company/partners/controller/PartnerController.java:
+```java
+package com.company.partners.controller;
+
+import com.company.partners.model.Partner;
+import com.company.partners.service.PartnerService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+
+@RestController
+@RequestMapping("/api/partners")
+public class PartnerController {
+
+    @Autowired
+    private PartnerService partnerService;
+
+    // Получить всех партнеров
+    @GetMapping
+    public List<Partner> getAllPartners() {
+        return partnerService.getAllPartners();
+    }
+
+    // Получить партнера по ID
+    @GetMapping("/{id}")
+    public ResponseEntity<Partner> getPartnerById(@PathVariable Long id) {
+        Partner partner = partnerService.getPartnerById(id);
+        if (partner != null) {
+            return ResponseEntity.ok(partner);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+    // Создать нового партнера
+    @PostMapping
+    public Partner createPartner(@RequestBody Partner partner) {
+        return partnerService.createPartner(partner);
+    }
+
+    // Обновить партнера
+    @PutMapping("/{id}")
+    public ResponseEntity<Partner> updatePartner(@PathVariable Long id, @RequestBody Partner partnerDetails) {
+        Partner updatedPartner = partnerService.updatePartner(id, partnerDetails);
+        if (updatedPartner != null) {
+            return ResponseEntity.ok(updatedPartner);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+    // Удалить партнера
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deletePartner(@PathVariable Long id) {
+        Partner partner = partnerService.getPartnerById(id);
+        if (partner != null) {
+            partnerService.deletePartner(id);
+            return ResponseEntity.ok().build();
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+    // Рассчитать скидку для партнера
+    @GetMapping("/{id}/discount")
+    public ResponseEntity<Double> calculateDiscount(@PathVariable Long id) {
+        Double discount = partnerService.calculateDiscount(id);
+        return ResponseEntity.ok(discount);
+    }
+
+    // Тестовые endpoints
+    @GetMapping("/test")
+    public String test() {
+        return "Partner API is working!";
+    }
+
+    @GetMapping("/health")
+    public String health() {
+        return "Partner controller is healthy!";
+    }
+}
+```
+
+   9. Обновите модель Partner (добавьте toString):
+      - src/main/java/com/company/partners/model/Partner.java:
+```java
+package com.company.partners.model;
+
+import jakarta.persistence.*;
+
+@Entity
+@Table(name = "partners")
+public class Partner {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "partner_id")  // Измените на partner_id
+    private Long id;
+    
+    @Column(name = "name", nullable = false)
+    private String name;
+    
+    @Column(name = "contact_person")  // Добавьте эту колонку
+    private String contactPerson;
+    
+    @Column(name = "email")
+    private String email;
+    
+    @Column(name = "phone")
+    private String phone;
+    
+    @Column(name = "address")  // Добавьте эту колонку
+    private String address;
+    
+    @Column(name = "total_sales")
+    private Double totalSales = 0.0;
+    
+    // Конструкторы
+    public Partner() {}
+    
+    public Partner(String name, String email, String phone) {
+        this.name = name;
+        this.email = email;
+        this.phone = phone;
+    }
+    
+    // Геттеры и сеттеры
+    public Long getId() { return id; }
+    public void setId(Long id) { this.id = id; }
+    
+    public String getName() { return name; }
+    public void setName(String name) { this.name = name; }
+    
+    public String getContactPerson() { return contactPerson; }
+    public void setContactPerson(String contactPerson) { this.contactPerson = contactPerson; }
+    
+    public String getEmail() { return email; }
+    public void setEmail(String email) { this.email = email; }
+    
+    public String getPhone() { return phone; }
+    public void setPhone(String phone) { this.phone = phone; }
+    
+    public String getAddress() { return address; }
+    public void setAddress(String address) { this.address = address; }
+    
+    public Double getTotalSales() { return totalSales; }
+    public void setTotalSales(Double totalSales) { this.totalSales = totalSales; }
+    
+    @Override
+    public String toString() {
+        return "Partner{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", contactPerson='" + contactPerson + '\'' +
+                ", email='" + email + '\'' +
+                ", phone='" + phone + '\'' +
+                ", address='" + address + '\'' +
+                ", totalSales=" + totalSales +
+                '}';
+    }
+}
+```
+
+   10. Тестирование API:
+      - GET запросы (через браузер):
+         - http://localhost:8080/api/partners - получить всех партнеров
+
+   11. Для тестирования POST/PUT запросов используйте `Postman`
+
